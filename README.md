@@ -7,6 +7,22 @@ text as specification. A lighter alternative to `pl.lapp`.
 It supports prefixed long option (eg. '--long-option'), short option
 (eg. '-h') s) and options with arguments.
 
+Functions
+---------
+
+### function from_opthelp(helptext, argv, errfunc)
+
+Parse `argv` option array according the specification in helptext. If argv
+is omitted (or nil) it wil use `_G.arg`.
+
+If invalid options are found, `errfunc` is called and return value is
+returned. If `errfunc` is omitted (or nil), the will error message be
+printed to stderr.
+
+The function returns two table, one with the parsed options and one with the
+reminding arguments.
+
+Option parsing is stopped at first non-option argument or at first `--`.
 
 Example
 --------
