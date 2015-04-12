@@ -7,10 +7,12 @@ text as specification. A lighter alternative to `pl.lapp`.
 It supports prefixed long option (eg. '--long-option'), short option
 (eg. '-h') s) and options with arguments.
 
+Unlike `pl.lapp` it does not support ranges or default values.
+
 Functions
 ---------
 
-### function from_opthelp(helptext, argv, errfunc)
+#### function from_opthelp(helptext, argv, errfunc)
 
 Parse `argv` option array according the specification in helptext. If argv
 is omitted (or nil) it wil use `_G.arg`.
