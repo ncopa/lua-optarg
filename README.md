@@ -2,12 +2,11 @@ lua-optarg
 ==========
 
 Simple command line option parser for Lua which uses GNU style option help
-text as specification.
+text as specification - a lighter alternative to 'pl.lapp'.
 
 It supports prefixed long option (eg. '--long-option'), short option
-(eg. '-h') s) and options wit arguments.
+(eg. '-h') s) and options with arguments.
 
-It aims to be a ligher alternative to `pl.lapp`.
 
 Example
 --------
@@ -18,7 +17,7 @@ opthelp = [[
  -c OPTARG          Short option with required argument OPTARG.
  -d, --with-arg=OPTARG
                     Another option with both short and long name with reqired
-		    argument OPTARG.
+                    argument OPTARG.
 
 Options without required option arguments may be specified multiple times.
 ]]
