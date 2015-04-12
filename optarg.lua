@@ -1,3 +1,11 @@
+--[[
+Simple command line option parser
+Copyright (c) 2015 Natanael Copa <ncopa@alpinelinux.org>
+
+License: MIT
+http://opensource.org/licenses/MIT
+
+--]]
 
 local M = {}
 
