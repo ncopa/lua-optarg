@@ -19,8 +19,8 @@ If invalid options are found, `errfunc` is called and return value is
 returned. If `errfunc` is omitted (or nil), the will error message be
 printed to stderr.
 
-The function returns two table, one with the parsed options and one with the
-reminding arguments.
+The function returns two tables, one with the parsed options and one with
+the reminding arguments.
 
 Option parsing is stopped at first non-option argument or at first `--`.
 
