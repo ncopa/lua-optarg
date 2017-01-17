@@ -11,6 +11,7 @@ Options:
  -o, --outfile=FILE    An option with required optarg FILE
  -s, --without-optarg  This is similar -b but wihtout the 
      --single-longopt  This is a longopt without shortopt
+     --infile=FILE     This is a longopt with required optarg, without shortopt
 
 Note that leading space is required for options.
 Option parsing is stopped at '--'.
