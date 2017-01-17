@@ -14,12 +14,16 @@ local function validate_opt(i, argv, valid, opt, target)
 		return nil, "invalid option"
 	end
 	if valid.has_arg then
-		if argv[i] == nil then
+		local optarg = argv[i]
+		if opt:match("=") then
+			optarg = opt:gsub("[^=]+=(.*)", "%1")
+		end
+		if optarg == nil then
 			return nil, "optarg required"
 		end
 		for _,s in pairs{'shortopt', 'longopt'} do
 			if valid[s] then
-				target[valid[s]] = argv[i]
+				target[valid[s]] = optarg
 			end
 		end
 		i = i + 1
@@ -87,7 +91,7 @@ function M.from_opthelp(opthelp, raw_args, errfunc)
 			moreopts = false
 		elseif moreopts and a:sub(1,2) == "--" then
 			local opt = a:sub(3)
-			i, err = validate_opt(i, raw_args, valid_longopts[opt], opt, opts)
+			i, err = validate_opt(i, raw_args, valid_longopts[opt:gsub("=.*", "")], opt, opts)
 			if not i then
 				return errfunc(a, err)
 			end
