@@ -91,7 +91,7 @@ function M.from_opthelp(opthelp, raw_args, errfunc)
 			if not i then
 				return errfunc(a, err)
 			end
-		elseif moreopts and a:sub(1,1) == "-" then
+		elseif moreopts and #a > 1 and a:sub(1,1) == "-" then
 			for j = 2, #a do
 				local opt = a:sub(j,j)
 				i, err = validate_opt(i, raw_args, valid_shortopts[opt], opt, opts)
