@@ -35,7 +35,11 @@ opthelp = [[
  -c OPTARG          Short option with required argument OPTARG.
  -d, --with-arg=OPTARG
                     Another option with both short and long name with reqired
-                    argument OPTARG.
+					argument OPTARG.
+ -e COUNT			Short option with count possiblity.
+					Stores multiple options in a table
+ -f, --with-count=COUNT
+					Long option with count possibility
 
 Options without required option arguments may be specified multiple times.
 ]]
@@ -67,6 +71,12 @@ if opts.d then
 		:format(opts['with-arg']))
 end
 
+if opts.e then
+	for k,v in pairs(opts.e) do
+		print("Option '-e' value #" .. k .. " : " ..v)
+	end
+end
+
 for i = 1,#args do
 	print(("args[%d]=%s"):format(i, args[i]))
 end
@@ -75,4 +85,3 @@ end
 License
 -------
 MIT
-

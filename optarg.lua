@@ -1,6 +1,7 @@
 --[[
 Simple command line option parser
 Copyright (c) 2015 Natanael Copa <ncopa@alpinelinux.org>
+Copyright (c) 2018 Igor Olhovskiy <IgorOlhovskiy@gmail.com>
 
 License: MIT
 http://opensource.org/licenses/MIT
@@ -13,7 +14,7 @@ local function validate_opt(i, argv, valid, opt, target)
 	if not valid then
 		return nil, "invalid option"
 	end
-	if valid.has_arg then
+    if valid.has_arg then
 		local optarg = argv[i]
 		if opt:match("=") then
 			optarg = opt:gsub("[^=]+=(.*)", "%1")
@@ -22,8 +23,17 @@ local function validate_opt(i, argv, valid, opt, target)
 			return nil, "optarg required"
 		end
 		for _,s in pairs{'shortopt', 'longopt'} do
-			if valid[s] then
-				target[valid[s]] = optarg
+            if valid[s] then
+                -- Create table for multiple parameter specify
+                if (valid.optarg == 'C') then
+                    if (target[valid[s]] ~= nil) then
+                        table.insert(target[valid[s]], optarg)
+                    else
+                        target[valid[s]] = {optarg}
+                    end 
+                else
+                    target[valid[s]] = optarg
+                end
 			end
 		end
 		i = i + 1
@@ -54,21 +64,23 @@ function M.from_opthelp(opthelp, raw_args, errfunc)
 --	end
 
 	-- search for: -a, --longopt[=OPTARG]
-	for shortopt, longopt, separator in opthelp:gmatch("%s+%-(%w),%s?%-%-([%w-_]+)([%s=])") do
+	for shortopt, longopt, separator, optarg in opthelp:gmatch("%s+%-(%w),%s?%-%-([%w-_]+)([%s=])([A-Z]?)") do
 		valid_shortopts[shortopt] = {
 			has_arg = (separator == "="),
 			shortopt = shortopt,
-			longopt = longopt
+            longopt = longopt,
+            optarg = optarg
 		}
 		valid_longopts[longopt] = valid_shortopts[shortopt]
-	end
+    end
 
 	-- search for: --longopt[=OPTARG]
-	for longopt, separator in opthelp:gmatch("[^,]%s+%-%-([%w-_]+)([%s=])") do
+	for longopt, separator, optarg in opthelp:gmatch("[^,]%s+%-%-([%w-_]+)([%s=])([A-Z]?)") do
 		if not valid_longopts[longopt] then
 			valid_longopts[longopt] = {
 				has_arg = (separator == "="),
-				longopt = longopt
+                longopt = longopt,
+                optarg = optarg
 			}
 		end
 	end
@@ -78,9 +90,10 @@ function M.from_opthelp(opthelp, raw_args, errfunc)
 		local has_arg = (separator == " " and not string.match(optarg or "", "%s"))
 		valid_shortopts[shortopt] = {
 			has_arg = has_arg,
-			shortopt = shortopt,
+            shortopt = shortopt,
+            optarg = optarg
 		}
-	end
+    end
 
 	local i = 1
 	while i <= #raw_args do
