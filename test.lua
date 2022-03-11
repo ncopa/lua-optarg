@@ -36,6 +36,9 @@ function test_from_opthelp()
 		{argv={'--single-longopt'}, opts={['single-longopt']=1}, args={}},
 		{argv={'-ah'},					opts={a=1,h=1,help=1},		args={}},
 		{argv={'-ab','B', '-a'},	opts={a=2,b='B'},				args={}},
+		{argv={'-b','B','--infile=in'},opts={infile='in',b='B'},	args={}},
+		{argv={'--infile=in','-a','-a','B'},opts={infile='in',a=2},	args={'B'}},
+		{argv={'--infile=in','-b','B'},opts={infile='in',b='B'},	args={}},
 	}
 	for _, t in pairs(tests) do
 		local opts, args = optarg.from_opthelp(opthelp, t.argv)
