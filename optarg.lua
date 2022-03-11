@@ -1,6 +1,6 @@
 --[[
 Simple command line option parser
-Copyright (c) 2015 Natanael Copa <ncopa@alpinelinux.org>
+Copyright (c) 2022 Natanael Copa <ncopa@alpinelinux.org>
 
 License: MIT
 http://opensource.org/licenses/MIT
@@ -17,6 +17,8 @@ local function validate_opt(i, argv, valid, opt, target)
 		local optarg = argv[i]
 		if opt:match("=") then
 			optarg = opt:gsub("[^=]+=(.*)", "%1")
+		else
+			i = i + 1
 		end
 		if optarg == nil then
 			return nil, "optarg required"
@@ -26,7 +28,6 @@ local function validate_opt(i, argv, valid, opt, target)
 				target[valid[s]] = optarg
 			end
 		end
-		i = i + 1
 	else
 		for _,s in pairs{'shortopt', 'longopt'} do
 			if valid[s] then
