@@ -40,6 +40,7 @@ function test_from_opthelp()
 		{argv={'--infile=in','-a','-a','B'},opts={infile='in',a=2},	args={'B'}},
 		{argv={'--infile=in','-b','B'},opts={infile='in',b='B'},	args={}},
 		{argv={'--infile=in','--outfile=out'},opts={infile='in',o='out', outfile='out'},	args={}},
+		{argv={'--infile=foo','--infile','bar'},opts={infile='bar'},	args={}}, -- last option wins
 	}
 	for _, t in pairs(tests) do
 		local opts, args = optarg.from_opthelp(opthelp, t.argv)
