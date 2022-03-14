@@ -1,6 +1,5 @@
 local lu = require('luaunit')
 
-local optarg = require("optarg")
 
 
 local opthelp = [[
@@ -21,6 +20,7 @@ Option parsing is stopped at '--'.
 ]]
 
 function test_from_opthelp()
+	local optarg = require("optarg")
 	local tests = {
 		{argv={'-a'},					opts={a=1},						args={}},
 		{argv={'-a','-a','-a'},		opts={a=3},						args={}},
@@ -50,12 +50,27 @@ function test_from_opthelp()
 end
 
 function test_missing_optarg()
+	local optarg = require("optarg")
 	local called=false
 	local opts, args = optarg.from_opthelp(opthelp, {'-b'}, function()
 		called=true
 	end)
 	lu.assertNil(opts)
 	lu.assertTrue(called)
+end
+
+function test_multi_optargs()
+	local optarg = require("optarg")
+	-- last option wins
+	local opts, args = optarg.from_opthelp(opthelp, {'-b','foo','-b','bar'})
+	lu.assertEquals(opts,{b='bar'})
+
+	-- when multiargs is ste we store the args to the options in an array
+	optarg.multiargs = true
+	opts, args = optarg.from_opthelp(opthelp, {'--infile=FILE'})
+	lu.assertEquals(opts,{infile={'FILE'}})
+	opts, args = optarg.from_opthelp(opthelp, {'-b','foo','-b','bar'})
+	lu.assertEquals(opts,{b={'foo','bar'}})
 end
 
 os.exit(lu.LuaUnit.run())

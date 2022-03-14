@@ -24,8 +24,14 @@ local function validate_opt(i, argv, valid, opt, target)
 			return nil, "optarg required"
 		end
 		for _,s in pairs{'shortopt', 'longopt'} do
-			if valid[s] then
-				target[valid[s]] = optarg
+			local t = valid[s]
+			if t then
+				if M.multiargs then
+					target[t] = target[t] or {}
+					table.insert(target[t], optarg)
+				else
+					target[t] = optarg
+				end
 			end
 		end
 	else
