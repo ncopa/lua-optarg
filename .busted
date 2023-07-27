@@ -1,0 +1,5 @@
+-- vim:set ft=lua
+return {
+	_all = { coverage = false },
+	default = { verbose = true },
+}
