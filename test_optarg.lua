@@ -22,6 +22,11 @@ function test_from_opthelp()
 	local optarg = require("optarg")
 	local tests = {
 		{
+			argv = { "-" },
+			opts = {},
+			args = { "-" },
+		},
+		{
 			argv = { "-a" },
 			opts = { a = 1 },
 			args = {},
@@ -30,6 +35,11 @@ function test_from_opthelp()
 			argv = { "-a", "-a", "-a" },
 			opts = { a = 3 },
 			args = {},
+		},
+		{
+			argv = { "-a", "--", "-a", "-a" },
+			opts = { a = 1 },
+			args = { "-a", "-a" },
 		},
 		{
 			argv = { "-h", "--help" },
