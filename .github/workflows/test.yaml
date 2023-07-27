@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Install dependencies
         run: |
-          apk add --update lua${{ matrix.lua_version }} lua${{ matrix.lua_version }}-unit
+          apk add --update lua${{ matrix.lua_version }} lua${{ matrix.lua_version }}-busted
       - name: Run tests
         run: |
-          lua${{ matrix.lua_version }} test_optarg.lua
+          busted-${{ matrix.lua_version }}
