@@ -152,4 +152,40 @@ function test_multi_optargs()
 	lu.assertEquals(opts, { b = { 'foo', 'bar' } })
 end
 
+-- luacheck: globals test_long_opt_after_arg
+function test_long_opt_after_arg()
+	local optarg = require("optarg")
+	local usage = [[
+		Usage: program [options] [args]
+	   -l, --long-opt=value
+	]]
+	local opts, args = optarg.from_opthelp(usage, { "arg1", "--long-opt=value" })
+	lu.assertEquals(opts, { ["l"] = "value", ["long-opt"] = "value" })
+	lu.assertEquals(args, { "arg1" })
+end
+
+-- luacheck: globals test_long_opt_before_arg
+function test_long_opt_before_arg()
+	local optarg = require("optarg")
+	local usage = [[
+		Usage: program [options] [args]
+	   -l, --long-opt=value
+	]]
+	local opts, args = optarg.from_opthelp(usage, { "--long-opt=value", "arg1" })
+	lu.assertEquals(opts, { ["l"] = "value", ["long-opt"] = "value" })
+	lu.assertEquals(args, { "arg1" })
+end
+
+-- luacheck: globals test_long_opt_without_separator
+function test_long_opt_without_separator()
+	local optarg = require("optarg")
+	local usage = [[
+		Usage: program [options] [args]
+	   -l, --long-opt=value
+	]]
+	local opts, args = optarg.from_opthelp(usage, { "--long-opt", "value", "arg1" })
+	lu.assertEquals(opts, { ["l"] = "value", ["long-opt"] = "value" })
+	lu.assertEquals(args, { "arg1" })
+end
+
 os.exit(lu.LuaUnit.run())
