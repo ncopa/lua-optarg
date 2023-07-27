@@ -23,7 +23,7 @@ local function validate_opt(i, argv, valid, opt, target)
 		if optarg == nil then
 			return nil, "optarg required"
 		end
-		for _, s in pairs { 'shortopt', 'longopt' } do
+		for _, s in pairs({ "shortopt", "longopt" }) do
 			local t = valid[s]
 			if t then
 				if M.multiargs then
@@ -35,7 +35,7 @@ local function validate_opt(i, argv, valid, opt, target)
 			end
 		end
 	else
-		for _, s in pairs { 'shortopt', 'longopt' } do
+		for _, s in pairs({ "shortopt", "longopt" }) do
 			if valid[s] then
 				target[valid[s]] = (target[valid[s]] or 0) + 1
 			end
@@ -51,17 +51,18 @@ function M.from_opthelp(opthelp, raw_args, errfunc)
 	local args = {}
 	local moreopts = true
 	raw_args = raw_args or _G.arg
-	errfunc = errfunc or function(opt, errstr)
-		io.stderr:write(("%s: %s: %s\n"):format(_G.arg[0], opt, errstr))
-		return nil, opt, errstr
-	end
+	errfunc = errfunc
+		 or function(opt, errstr)
+			 io.stderr:write(("%s: %s: %s\n"):format(_G.arg[0], opt, errstr))
+			 return nil, opt, errstr
+		 end
 
 	-- search for: -a, --longopt[=OPTARG]
 	for shortopt, longopt, separator in opthelp:gmatch("%s+%-(%w),%s?%-%-([%w-_]+)([%s=])") do
 		valid_shortopts[shortopt] = {
 			has_arg = (separator == "="),
 			shortopt = shortopt,
-			longopt = longopt
+			longopt = longopt,
 		}
 		valid_longopts[longopt] = valid_shortopts[shortopt]
 	end
@@ -71,7 +72,7 @@ function M.from_opthelp(opthelp, raw_args, errfunc)
 		if not valid_longopts[longopt] then
 			valid_longopts[longopt] = {
 				has_arg = (separator == "="),
-				longopt = longopt
+				longopt = longopt,
 			}
 		end
 	end
