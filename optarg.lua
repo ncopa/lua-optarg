@@ -23,7 +23,7 @@ local function validate_opt(i, argv, valid, opt, target)
 		if optarg == nil then
 			return nil, "optarg required"
 		end
-		for _,s in pairs{'shortopt', 'longopt'} do
+		for _, s in pairs { 'shortopt', 'longopt' } do
 			local t = valid[s]
 			if t then
 				if M.multiargs then
@@ -35,7 +35,7 @@ local function validate_opt(i, argv, valid, opt, target)
 			end
 		end
 	else
-		for _,s in pairs{'shortopt', 'longopt'} do
+		for _, s in pairs { 'shortopt', 'longopt' } do
 			if valid[s] then
 				target[valid[s]] = (target[valid[s]] or 0) + 1
 			end
@@ -55,10 +55,6 @@ function M.from_opthelp(opthelp, raw_args, errfunc)
 		io.stderr:write(("%s: %s: %s\n"):format(_G.arg[0], opt, errstr))
 		return nil, opt, errstr
 	end
---	for line in opthelp:gmatch("[^\n]+") do
---		local short, long, has_arg = parse_helpline(line)
---		print("line: ", line)
---	end
 
 	-- search for: -a, --longopt[=OPTARG]
 	for shortopt, longopt, separator in opthelp:gmatch("%s+%-(%w),%s?%-%-([%w-_]+)([%s=])") do
@@ -96,15 +92,15 @@ function M.from_opthelp(opthelp, raw_args, errfunc)
 		i = i + 1
 		if a == "--" then
 			moreopts = false
-		elseif moreopts and a:sub(1,2) == "--" then
+		elseif moreopts and a:sub(1, 2) == "--" then
 			local opt = a:sub(3)
 			i, err = validate_opt(i, raw_args, valid_longopts[opt:gsub("=.*", "")], opt, opts)
 			if not i then
 				return errfunc(a, err)
 			end
-		elseif moreopts and #a > 1 and a:sub(1,1) == "-" then
+		elseif moreopts and #a > 1 and a:sub(1, 1) == "-" then
 			for j = 2, #a do
-				local opt = a:sub(j,j)
+				local opt = a:sub(j, j)
 				i, err = validate_opt(i, raw_args, valid_shortopts[opt], opt, opts)
 				if not i then
 					return errfunc(a, err)
@@ -116,6 +112,5 @@ function M.from_opthelp(opthelp, raw_args, errfunc)
 	end
 	return opts, args
 end
-
 
 return M
