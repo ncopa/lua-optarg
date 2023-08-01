@@ -1,3 +1,5 @@
+package.path = "./?.lua;" .. package.path
+
 local optarg = require("optarg")
 
 local opthelp = [[
